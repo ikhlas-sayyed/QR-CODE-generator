@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OR code </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1 class="logo">QR CODE</h1>
+        <ul class="list">
+            <li class="list_item">home</li>
+            <li class="list_item">about</li>
+            <li class="list_item">contact</li>
+        </ul>
+    </header>
+    <main>
+        <form class="form" onsubmit="event.preventDefault()" >
+            <h1>QR code generator </h1>
+            <input type="text" name="text" id="text" placeholder="Write Text"/>
+            <br>
+            <button type="submit" onclick="generator()">generator</button>
+        </form>
+        <div class="image">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHQAAAB0CAYAAABUmhYnAAAAAklEQVR4AewaftIAAAKYSURBVO3BQY7DVgwFwX6E7n/ljpdcfUCQ7EwYVsUP1hjFGqVYoxRrlGKNUqxRijVKsUYp1ijFGqVYoxRrlGKNUqxRijVKsUa5eCgJv6TyS0n4JZUnijVKsUYp1igXL1N5UxKeSEKn8oTKm5LwpmKNUqxRijXKxZcl4Q6VO5JwotIl4UTljiTcofJNxRqlWKMUa5SLYVS6JHQqXRImKdYoxRqlWKNcDJOETuX/pFijFGuUYo1y8WUqv6TSJeFE5QmVv6RYoxRrlGKNcvGyJPxlKl0SOpWTJPxlxRqlWKMUa5T4wX9YEu5QmaxYoxRrlGKNEj94IAmdSpeEN6nckYQTlZMkvEnlm4o1SrFGKdYoF3+Myh1JeCIJd6icJOGOJHQqTxRrlGKNUqxR4gc/lIQTlS4JJypPJKFT6ZJwotIl4Q6VNxVrlGKNUqxRLh5KQqfSJeEJlS4JXRLelIQTlSdUvqlYoxRrlGKNcvGyJHQqJ0k4ScKJyhNJ6FROktCpdConSehU3lSsUYo1SrFGuXhI5QmVE5WTJHQq/6YkdCqdSpeETuWJYo1SrFGKNUr84IEk/JLKSRLuUOmS0KmcJOEJlTcVa5RijVKsUS5epvKmJJwkoVN5QuUkCX9ZsUYp1ijFGuXiy5Jwh8o3JaFT6ZLQqXQqXRI6lZMkfFOxRinWKMUa5WK4JJwk4SQJJypdEjqVTuWbijVKsUYp1igXwyShUzlJQqfSJeG/pFijFGuUYo1y8WUq36TSJeEkCSdJeEKlS0Kn8k3FGqVYoxRrlIuXJeGXknCHSpeETuUkCXeodEnoVN5UrFGKNUqxRokfrDGKNUqxRinWKMUapVijFGuUYo1SrFGKNUqxRinWKMUapVijFGuUYo3yD3cz8+pSGMLaAAAAAElFTkSuQmCC" alt="QR" id="img">
+            <br>
+            <button id="downloadButton">download image</button>
+        </div>
+    </main>
+</body>
+<script>
+const downloadButton = document.getElementById("downloadButton");
+const imageElement = document.getElementById("img");
+
+downloadButton.addEventListener("click", function() {
+  const imageSrcData = imageElement.src;
+  const mimeType = imageSrcData.split(";")[0].split(":")[1];
+  const base64Data = imageSrcData.split(",")[1];
+
+  const byteCharacters = atob(base64Data); // Decode base64 to binary data
+  const byteArrays = [];
+
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteArrays.push(byteCharacters.charCodeAt(i));
+  }
+
+  const blob = new Blob([new Uint8Array(byteArrays)], { type: mimeType });
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "QR.jpg"; // Set the desired filename
+  a.click();
+  URL.revokeObjectURL(url);
+});
+</script>
+<script src="script.js"></script>
+</html>
